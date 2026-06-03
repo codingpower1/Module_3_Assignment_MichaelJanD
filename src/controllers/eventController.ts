@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { db } from "../config/firebaseConfig";
-import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, DocumentReference } from "firebase/firestore";
+import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 
-export const createEvent = async (req: Request, res: Response) => {
+export const createEvent = async (req: Request, res: Response): Promise<void> => {
     try {
         const event = req.body;
         const ref = await addDoc(collection(db, "events"), event);
@@ -12,7 +12,7 @@ export const createEvent = async (req: Request, res: Response) => {
     }
 };
 
-export const getAllEvents = async (req: Request, res: Response) => {
+export const getAllEvents = async (req: Request, res: Response): Promise<void> => {
     try {
         const snapshot = await getDocs(collection(db, "events"));
         const events = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -22,35 +22,32 @@ export const getAllEvents = async (req: Request, res: Response) => {
     }
 };
 
-export const getEventById = async (req: Request, res: Response) => {
+export const getEventById = async (req: Request, res: Response): Promise<void> => {
     try {
-        const ref = docRef(db, "events", req.params.id);
-        const snap = await getDoc(ref);
-        if (!snap.exists()) return res.status(404).json({ error: "Event not found" });
-        res.status(200).json({ id: snap.id, ...snap.data() });
+        const snap = await getDoc(doc(db, "events", String(req.params.id)));
+        if (!snap.exists()) { res.status(404).json({ error: "Event not found" }); return; }
+        res.status(200).json({ id: snap.id, ...snap.data() as object });
     } catch (error) {
         res.status(500).json({ error: "Failed to get event" });
     }
 };
 
-export const updateEvent = async (req: Request, res: Response) => {
+export const updateEvent = async (req: Request, res: Response): Promise<void> => {
     try {
-        const ref = docRef(db, "events", req.params.id);
-        const snap = await getDoc(ref);
-        if (!snap.exists()) return res.status(404).json({ error: "Event not found" });
-        await updateDoc(ref, req.body);
+        const snap = await getDoc(doc(db, "events", String(req.params.id)));
+        if (!snap.exists()) { res.status(404).json({ error: "Event not found" }); return; }
+        await updateDoc(doc(db, "events", String(req.params.id)), req.body);
         res.status(200).json({ id: req.params.id, ...req.body });
     } catch (error) {
         res.status(500).json({ error: "Failed to update event" });
     }
 };
 
-export const deleteEvent = async (req: Request, res: Response) => {
+export const deleteEvent = async (req: Request, res: Response): Promise<void> => {
     try {
-        const ref = docRef(db, "events", req.params.id);
-        const snap = await getDoc(ref);
-        if (!snap.exists()) return res.status(404).json({ error: "Event not found" });
-        await deleteDoc(ref);
+        const snap = await getDoc(doc(db, "events", String(req.params.id)));
+        if (!snap.exists()) { res.status(404).json({ error: "Event not found" }); return; }
+        await deleteDoc(doc(db, "events", String(req.params.id)));
         res.status(200).json({ message: "Event deleted successfully" });
     } catch (error) {
         res.status(500).json({ error: "Failed to delete event" });
