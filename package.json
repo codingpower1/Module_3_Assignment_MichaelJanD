@@ -1,0 +1,36 @@
+{
+  "name": "module_3_assignment_michaeljand",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codingpower1/Module_3_Assignment_MichaelJanD.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/codingpower1/Module_3_Assignment_MichaelJanD/issues"
+  },
+  "homepage": "https://github.com/codingpower1/Module_3_Assignment_MichaelJanD#readme",
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.1",
+    "express": "^5.2.1",
+    "firebase": "^10.7.0",
+    "joi": "^18.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/joi": "^17.2.2",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11"
+  }
+}
